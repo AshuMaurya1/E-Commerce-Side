@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, IndianRupee, Package, ShoppingCart, Users } from 'lucide-react';
 import { adminService } from '../../services/adminService';
+import { ErrorState } from '../../components/ErrorState';
 import { formatCurrency, formatDate } from '../../utils/format';
 import { SalesChart } from '../../components/SalesChart';
 import { OrderStatusBadge } from '../../components/OrderStatusBadge';
@@ -9,6 +10,7 @@ import { PageSpinner } from '../../components/Skeletons';
 
 export function AdminDashboardPage() {
   const [data, setData] = useState(null);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,6 +21,7 @@ export function AdminDashboardPage() {
   }, []);
 
   if (loading) return <PageSpinner />;
+  if (error) return <ErrorState message={error} actionTo="/admin" />;
   if (!data) return null;
 
   const stats = [

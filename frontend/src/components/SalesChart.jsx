@@ -4,6 +4,10 @@ import { formatCurrency } from '../utils/format';
 export function SalesChart({ data = [], height = 210 }) {
   if (!data || data.length === 0) {
     return (
+      <ErrorState message="No sales activity in this period yet." />
+    );
+  }
+    return (
       <div className="flex h-48 items-center justify-center text-sm text-zinc-500">
         No sales activity in this period yet.
       </div>
