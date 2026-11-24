@@ -15,7 +15,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     long countByUserId(Long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Address a SET a.defaultAddress = false WHERE a.user.id = :userId AND a.defaultAddress = true")
     void clearDefaultForUser(@Param("userId") Long userId);
 }
