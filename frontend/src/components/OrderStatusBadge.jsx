@@ -7,7 +7,7 @@ export function OrderStatusBadge({ status }) {
     cls: 'bg-zinc-100 text-zinc-700 border-zinc-200',
   };
   return (
-    <span className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium ${meta.cls}`}>
+    <span className={`inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-medium ${meta.cls}`}>
       {meta.label}
     </span>
   );
@@ -19,7 +19,7 @@ export function PaymentStatusBadge({ status }) {
     cls: 'bg-zinc-100 text-zinc-700 border-zinc-200',
   };
   return (
-    <span className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium ${meta.cls}`}>
+    <span className={`inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-medium ${meta.cls}`}>
       {meta.label}
     </span>
   );

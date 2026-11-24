@@ -96,7 +96,7 @@ export function AdminOrdersPage() {
         <p className="text-sm text-zinc-500">Review orders, verify payments, and advance fulfillment states.</p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 rounded-md border border-zinc-200 bg-white p-4">
+      <div className="flex flex-wrap items-center gap-3 rounded-sm border border-zinc-200 bg-white p-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -109,11 +109,11 @@ export function AdminOrdersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search order #, customer email, or recipient..."
-            className="flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm"
+            className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
           />
           <button
             type="submit"
-            className="rounded-md border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800"
+            className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800"
           >
             Search
           </button>
@@ -122,7 +122,7 @@ export function AdminOrdersPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm"
+          className="rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm"
         >
           <option value="">All Statuses</option>
           {Object.keys(NEXT_TRANSITIONS).map((s) => (
@@ -134,7 +134,7 @@ export function AdminOrdersPage() {
       {loading ? (
         <TableSkeleton rows={6} cols={6} />
       ) : (
-        <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+        <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-surface text-xs uppercase text-zinc-500">
@@ -187,7 +187,7 @@ export function AdminOrdersPage() {
       {/* Order Detail Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
-          <div className="my-8 w-full max-w-2xl rounded-md border border-zinc-200 bg-white p-6 space-y-5">
+          <div className="my-8 w-full max-w-2xl rounded-sm border border-zinc-200 bg-white p-6 space-y-5">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
               <div>
                 <h2 className="text-lg font-semibold text-navy font-mono">{selectedOrder.orderNumber}</h2>
@@ -241,7 +241,7 @@ export function AdminOrdersPage() {
                   <select
                     value={targetStatus}
                     onChange={(e) => setTargetStatus(e.target.value)}
-                    className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   >
                     {(NEXT_TRANSITIONS[selectedOrder.status] || []).map((st) => (
                       <option key={st} value={st}>{st}</option>
@@ -251,13 +251,13 @@ export function AdminOrdersPage() {
                     placeholder="Status note (optional)"
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
-                    className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={updating}
-                  className="rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+                  className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
                 >
                   {updating ? 'Updating...' : 'Update Status'}
                 </button>

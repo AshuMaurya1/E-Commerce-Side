@@ -64,7 +64,7 @@ export function AdminInventoryPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Manual Adjustment */}
-        <form onSubmit={handleAdjust} className="lg:col-span-5 rounded-md border border-zinc-200 bg-white p-5 space-y-4">
+        <form onSubmit={handleAdjust} className="lg:col-span-5 rounded-sm border border-zinc-200 bg-white p-5 space-y-4">
           <h2 className="text-sm font-semibold text-navy flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Adjust Product Stock
@@ -75,7 +75,7 @@ export function AdminInventoryPage() {
               required
               value={adjustForm.productId}
               onChange={(e) => setAdjustForm({ ...adjustForm, productId: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             >
               {allProducts.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -93,7 +93,7 @@ export function AdminInventoryPage() {
               required
               value={adjustForm.quantityDelta}
               onChange={(e) => setAdjustForm({ ...adjustForm, quantityDelta: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -102,20 +102,20 @@ export function AdminInventoryPage() {
               value={adjustForm.note}
               onChange={(e) => setAdjustForm({ ...adjustForm, note: e.target.value })}
               placeholder="Supplier restock PO-402"
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-md bg-navy py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+            className="w-full rounded-sm bg-navy py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
           >
             {submitting ? 'Applying...' : 'Apply Adjustment'}
           </button>
         </form>
 
         {/* Low Stock List */}
-        <div className="lg:col-span-7 rounded-md border border-zinc-200 bg-white p-5">
+        <div className="lg:col-span-7 rounded-sm border border-zinc-200 bg-white p-5">
           <h2 className="text-sm font-semibold text-navy flex items-center gap-2 mb-3">
             <AlertTriangle className="h-4 w-4 text-amber-600" />
             Low-Stock Alerts ({lowStock.length})
@@ -152,7 +152,7 @@ export function AdminInventoryPage() {
       </div>
 
       {/* Audit Logs */}
-      <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="border-b border-zinc-200 px-5 py-3.5">
           <h2 className="text-sm font-semibold text-navy">Inventory Audit Log</h2>
         </div>

@@ -88,14 +88,14 @@ export function AdminCouponsPage() {
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
+          className="inline-flex items-center gap-2 rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
         >
           <Plus className="h-4 w-4" />
           Create Coupon
         </button>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-surface text-xs uppercase text-zinc-500">
@@ -162,7 +162,7 @@ export function AdminCouponsPage() {
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-md border border-zinc-200 bg-white p-6">
+          <div className="w-full max-w-md rounded-sm border border-zinc-200 bg-white p-6">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3 mb-4">
               <h2 className="text-base font-semibold text-navy">New Coupon</h2>
               <button type="button" onClick={() => setModalOpen(false)}>
@@ -175,19 +175,19 @@ export function AdminCouponsPage() {
                 placeholder="Code (e.g. FESTIVE15)"
                 value={form.code}
                 onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm uppercase"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm uppercase"
               />
               <input
                 placeholder="Description"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
               />
               <div className="grid grid-cols-2 gap-3">
                 <select
                   value={form.discountType}
                   onChange={(e) => setForm({ ...form, discountType: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 >
                   <option value="PERCENTAGE">Percentage (%)</option>
                   <option value="FIXED">Fixed (₹)</option>
@@ -199,7 +199,7 @@ export function AdminCouponsPage() {
                   placeholder="Value"
                   value={form.discountValue}
                   onChange={(e) => setForm({ ...form, discountValue: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
                 <input
                   type="number"
@@ -207,7 +207,7 @@ export function AdminCouponsPage() {
                   placeholder="Min order ₹"
                   value={form.minOrderValue}
                   onChange={(e) => setForm({ ...form, minOrderValue: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
                 <input
                   type="number"
@@ -215,7 +215,7 @@ export function AdminCouponsPage() {
                   placeholder="Max discount ₹"
                   value={form.maxDiscount}
                   onChange={(e) => setForm({ ...form, maxDiscount: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
                 <input
                   type="number"
@@ -223,27 +223,27 @@ export function AdminCouponsPage() {
                   placeholder="Usage limit"
                   value={form.usageLimit}
                   onChange={(e) => setForm({ ...form, usageLimit: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
                 <input
                   type="date"
                   required
                   value={form.expiresAt}
                   onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
               </div>
               <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-md border border-zinc-300 px-3.5 py-1.5 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md bg-navy px-4 py-1.5 text-sm font-medium text-white"
+                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white"
                 >
                   Create
                 </button>

@@ -15,6 +15,10 @@ export function SalesChart({ data = [], height = 210 }) {
 
   return (
     <div className="w-full">
+      <div className="flex items-center justify-between text-[11px] text-zinc-400 pb-2 border-b border-dashed border-zinc-200 mb-3 tabular-nums">
+        <span>Peak: {formatCurrency(maxRev)}</span>
+        <span>{data.length} days</span>
+      </div>
       <div className="flex items-end gap-1.5 sm:gap-2" style={{ height }}>
         {data.map((point, idx) => {
           const rev = Number(point.revenue || 0);
@@ -22,18 +26,18 @@ export function SalesChart({ data = [], height = 210 }) {
           const dateLabel = point.date.slice(5);
           return (
             <div key={point.date} className="group relative flex-1 flex flex-col items-center h-full justify-end">
-              <div className="pointer-events-none absolute -top-9 z-10 hidden whitespace-nowrap rounded bg-navy px-2 py-1 text-[11px] text-white group-hover:block">
+              <div className="pointer-events-none absolute -top-9 z-10 hidden whitespace-nowrap rounded-sm bg-navy px-2 py-1 text-[11px] text-white tabular-nums group-hover:block">
                 {point.date}: {formatCurrency(rev)} ({point.orders} orders)
               </div>
               <div className="w-full flex items-end justify-center flex-1">
                 <div
-                  className={`w-full max-w-[26px] rounded-t transition-colors ${
-                    rev > 0 ? 'bg-navy group-hover:bg-emerald-600' : 'bg-zinc-200'
+                  className={`w-full max-w-[24px] rounded-t-sm transition-colors ${
+                    rev > 0 ? 'bg-navy group-hover:bg-emerald-700' : 'bg-zinc-200'
                   }`}
                   style={{ height: `${barPct}%` }}
                 />
               </div>
-              <span className="mt-1.5 text-[10px] text-zinc-500 h-4">
+              <span className="mt-1.5 text-[10px] text-zinc-500 h-4 tabular-nums">
                 {idx % labelEvery === 0 ? dateLabel : ''}
               </span>
             </div>

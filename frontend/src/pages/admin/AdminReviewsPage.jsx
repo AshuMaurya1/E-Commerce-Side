@@ -53,7 +53,7 @@ export function AdminReviewsPage() {
         <p className="text-sm text-zinc-500">Moderate customer ratings and reviews across the catalog.</p>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="divide-y divide-zinc-100">
           {loading ? (
             <div className="p-6 text-center text-sm text-zinc-500">Loading...</div>

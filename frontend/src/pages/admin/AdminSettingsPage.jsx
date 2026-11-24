@@ -52,14 +52,14 @@ export function AdminSettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <form onSubmit={handleSaveProfile} className="rounded-md border border-zinc-200 bg-white p-6 space-y-4">
+        <form onSubmit={handleSaveProfile} className="rounded-sm border border-zinc-200 bg-white p-6 space-y-4">
           <h2 className="text-sm font-semibold text-navy">Admin Account</h2>
           <div>
             <label className="block text-xs font-medium text-zinc-700 mb-1">Email</label>
             <input
               disabled
               value={user?.email || ''}
-              className="w-full rounded-md border border-zinc-200 bg-surface px-3 py-2 text-sm text-zinc-500"
+              className="w-full rounded-sm border border-zinc-200 bg-surface px-3 py-2 text-sm text-zinc-500"
             />
           </div>
           <div>
@@ -68,7 +68,7 @@ export function AdminSettingsPage() {
               required
               value={profile.fullName}
               onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -76,19 +76,19 @@ export function AdminSettingsPage() {
             <input
               value={profile.phone}
               onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <button
             type="submit"
             disabled={savingProfile}
-            className="rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+            className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
           >
             {savingProfile ? 'Saving...' : 'Save Profile'}
           </button>
         </form>
 
-        <form onSubmit={handleChangePassword} className="rounded-md border border-zinc-200 bg-white p-6 space-y-4">
+        <form onSubmit={handleChangePassword} className="rounded-sm border border-zinc-200 bg-white p-6 space-y-4">
           <h2 className="text-sm font-semibold text-navy">Update Password</h2>
           <div>
             <label className="block text-xs font-medium text-zinc-700 mb-1">Current Password</label>
@@ -97,7 +97,7 @@ export function AdminSettingsPage() {
               required
               value={passwords.currentPassword}
               onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -107,20 +107,20 @@ export function AdminSettingsPage() {
               required
               value={passwords.newPassword}
               onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
             />
           </div>
           <button
             type="submit"
             disabled={savingPw}
-            className="rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+            className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
           >
             {savingPw ? 'Updating...' : 'Change Password'}
           </button>
         </form>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-white p-6">
+      <div className="rounded-sm border border-zinc-200 bg-white p-6">
         <h2 className="text-sm font-semibold text-navy mb-3">Platform Rules</h2>
         <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
           <div className="rounded bg-surface p-3.5">

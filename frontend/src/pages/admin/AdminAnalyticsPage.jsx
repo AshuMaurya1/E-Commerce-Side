@@ -33,7 +33,7 @@ export function AdminAnalyticsPage() {
         <select
           value={days}
           onChange={(e) => setDays(Number(e.target.value))}
-          className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm"
+          className="rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm"
         >
           <option value={7}>Last 7 days</option>
           <option value={14}>Last 14 days</option>
@@ -43,13 +43,13 @@ export function AdminAnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-md border border-zinc-200 bg-white p-5">
+        <div className="rounded-sm border border-zinc-200 bg-white p-5">
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Period Gross Order Value
           </p>
           <p className="mt-2 text-2xl font-semibold text-navy">{formatCurrency(totalPeriodRevenue)}</p>
         </div>
-        <div className="rounded-md border border-zinc-200 bg-white p-5">
+        <div className="rounded-sm border border-zinc-200 bg-white p-5">
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Period Orders (Non-Cancelled)
           </p>
@@ -57,13 +57,13 @@ export function AdminAnalyticsPage() {
         </div>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-white p-5">
+      <div className="rounded-sm border border-zinc-200 bg-white p-5">
         <h2 className="text-sm font-semibold text-navy mb-4">Revenue Over Time</h2>
         <SalesChart data={data.salesTrend} height={240} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-md border border-zinc-200 bg-white p-5">
+        <div className="rounded-sm border border-zinc-200 bg-white p-5">
           <h2 className="text-sm font-semibold text-navy mb-4">Orders by Status</h2>
           {Object.keys(data.ordersByStatus || {}).length === 0 ? (
             <p className="text-sm text-zinc-500">No orders recorded yet.</p>
@@ -79,7 +79,7 @@ export function AdminAnalyticsPage() {
           )}
         </div>
 
-        <div className="rounded-md border border-zinc-200 bg-white p-5">
+        <div className="rounded-sm border border-zinc-200 bg-white p-5">
           <h2 className="text-sm font-semibold text-navy mb-4">Top Performing Products</h2>
           <div className="divide-y divide-zinc-100">
             {data.topProducts.map((p) => (

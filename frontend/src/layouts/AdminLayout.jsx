@@ -46,7 +46,7 @@ export function AdminLayout() {
       <div>
         <div className="flex h-16 items-center justify-between border-b border-navy-800 px-5">
           <Link to="/admin" className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded bg-emerald-600 text-xs font-semibold text-white">
+            <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-emerald-600 text-[11px] font-semibold text-white">
               S
             </span>
             <span className="text-sm font-semibold tracking-tight text-white">
@@ -62,7 +62,7 @@ export function AdminLayout() {
           </button>
         </div>
 
-        <nav className="p-3 space-y-1">
+        <nav className="p-3 space-y-0.5">
           {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
             <NavLink
               key={to}
@@ -70,34 +70,34 @@ export function AdminLayout() {
               end={end}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                `flex items-center gap-3 rounded-sm px-3 py-2 text-[13px] font-medium transition-colors ${
                   isActive
                     ? 'bg-navy-800 text-white'
                     : 'text-zinc-400 hover:bg-navy-800/60 hover:text-zinc-100'
                 }`
               }
             >
-              <Icon className="h-4 w-4 shrink-0" />
+              <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
               {label}
             </NavLink>
           ))}
         </nav>
       </div>
 
-      <div className="border-t border-navy-800 p-3 space-y-1">
+      <div className="border-t border-navy-800 p-3 space-y-0.5">
         <Link
           to="/"
-          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-zinc-300 hover:bg-navy-800"
+          className="flex items-center gap-3 rounded-sm px-3 py-2 text-[13px] text-zinc-300 hover:bg-navy-800"
         >
-          <Store className="h-4 w-4" />
+          <Store className="h-4 w-4" strokeWidth={1.75} />
           View Storefront
         </Link>
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-red-300 hover:bg-navy-800"
+          className="flex w-full items-center gap-3 rounded-sm px-3 py-2 text-[13px] text-red-300 hover:bg-navy-800"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-4 w-4" strokeWidth={1.75} />
           Logout
         </button>
       </div>
@@ -105,11 +105,9 @@ export function AdminLayout() {
   );
 
   return (
-    <div className="min-h-screen flex bg-surface">
-      {/* Desktop Sidebar */}
+    <div className="min-h-screen flex bg-warmwhite">
       <aside className="hidden lg:block w-60 shrink-0">{navContent}</aside>
 
-      {/* Mobile Sidebar */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden">
           <div className="w-64 shrink-0">{navContent}</div>
@@ -120,19 +118,20 @@ export function AdminLayout() {
         </div>
       )}
 
-      {/* Main content */}
       <div className="flex-1 min-w-0 flex flex-col">
         <header className="flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-4 sm:px-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="rounded-md p-1.5 text-zinc-600 hover:bg-surface lg:hidden"
+              className="rounded-sm p-1.5 text-zinc-600 hover:bg-surface lg:hidden"
               aria-label="Open sidebar"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <span className="text-sm font-medium text-zinc-600">Operations Console</span>
+            <span className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+              Operations Console
+            </span>
           </div>
           <div className="text-right">
             <p className="text-sm font-medium text-zinc-900">{user?.fullName}</p>

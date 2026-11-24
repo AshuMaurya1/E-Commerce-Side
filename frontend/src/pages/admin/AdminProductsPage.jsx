@@ -186,7 +186,7 @@ export function AdminProductsPage() {
         <button
           type="button"
           onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
+          className="inline-flex items-center gap-2 rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
         >
           <Plus className="h-4 w-4" />
           Add Product
@@ -194,7 +194,7 @@ export function AdminProductsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3 rounded-md border border-zinc-200 bg-white p-4">
+      <div className="flex flex-wrap items-center gap-3 rounded-sm border border-zinc-200 bg-white p-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -207,11 +207,11 @@ export function AdminProductsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by product name or SKU..."
-            className="flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm"
+            className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
           />
           <button
             type="submit"
-            className="rounded-md border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800"
+            className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800"
           >
             Search
           </button>
@@ -220,7 +220,7 @@ export function AdminProductsPage() {
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm"
+          className="rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -243,7 +243,7 @@ export function AdminProductsPage() {
       {loading ? (
         <TableSkeleton rows={6} cols={6} />
       ) : (
-        <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+        <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-surface text-xs uppercase text-zinc-500">
@@ -326,7 +326,7 @@ export function AdminProductsPage() {
       {/* Product Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
-          <div className="my-8 w-full max-w-2xl rounded-md border border-zinc-200 bg-white p-6">
+          <div className="my-8 w-full max-w-2xl rounded-sm border border-zinc-200 bg-white p-6">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3 mb-4">
               <h2 className="text-lg font-semibold text-navy">
                 {editingId ? 'Edit Product' : 'Add New Product'}
@@ -344,7 +344,7 @@ export function AdminProductsPage() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -353,7 +353,7 @@ export function AdminProductsPage() {
                     required
                     value={form.categoryId}
                     onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   >
                     <option value="">Select category</option>
                     {categories.map((c) => (
@@ -369,7 +369,7 @@ export function AdminProductsPage() {
                     required
                     value={form.sku}
                     onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm uppercase"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm uppercase"
                   />
                 </div>
                 <div>
@@ -377,7 +377,7 @@ export function AdminProductsPage() {
                   <input
                     value={form.brand}
                     onChange={(e) => setForm({ ...form, brand: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -389,7 +389,7 @@ export function AdminProductsPage() {
                     required
                     value={form.price}
                     onChange={(e) => setForm({ ...form, price: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -400,7 +400,7 @@ export function AdminProductsPage() {
                     min="0.01"
                     value={form.discountPrice}
                     onChange={(e) => setForm({ ...form, discountPrice: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -411,7 +411,7 @@ export function AdminProductsPage() {
                     required
                     value={form.stockQuantity}
                     onChange={(e) => setForm({ ...form, stockQuantity: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -421,7 +421,7 @@ export function AdminProductsPage() {
                     min="0"
                     value={form.lowStockThreshold}
                     onChange={(e) => setForm({ ...form, lowStockThreshold: e.target.value })}
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                   />
                 </div>
               </div>
@@ -432,7 +432,7 @@ export function AdminProductsPage() {
                   maxLength={320}
                   value={form.shortDescription}
                   onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
-                  className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
               </div>
 
@@ -443,7 +443,7 @@ export function AdminProductsPage() {
                   rows={3}
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
                 />
               </div>
 
@@ -468,7 +468,7 @@ export function AdminProductsPage() {
                           next[idx] = e.target.value;
                           setForm({ ...form, imageUrls: next });
                         }}
-                        className="flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm"
+                        className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
                       />
                       {form.imageUrls.length > 1 && (
                         <button
@@ -527,14 +527,14 @@ export function AdminProductsPage() {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700"
+                  className="rounded-sm border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+                  className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : editingId ? 'Update Product' : 'Create Product'}
                 </button>

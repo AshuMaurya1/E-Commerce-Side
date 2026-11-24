@@ -62,24 +62,24 @@ export function AdminCustomersPage() {
           e.preventDefault();
           loadCustomers(0);
         }}
-        className="flex gap-2 rounded-md border border-zinc-200 bg-white p-4 max-w-lg"
+        className="flex gap-2 rounded-sm border border-zinc-200 bg-white p-4 max-w-lg"
       >
         <input
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by customer name or email..."
-          className="flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm"
+          className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
         />
         <button
           type="submit"
-          className="rounded-md border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium"
+          className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium"
         >
           Search
         </button>
       </form>
 
-      <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-surface text-xs uppercase text-zinc-500">
@@ -140,7 +140,7 @@ export function AdminCustomersPage() {
 
       {selectedCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-xl rounded-md border border-zinc-200 bg-white p-6 space-y-4">
+          <div className="w-full max-w-xl rounded-sm border border-zinc-200 bg-white p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
               <div>
                 <h2 className="text-base font-semibold text-navy">{selectedCustomer.fullName}</h2>

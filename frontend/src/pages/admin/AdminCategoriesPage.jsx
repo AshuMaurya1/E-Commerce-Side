@@ -99,14 +99,14 @@ export function AdminCategoriesPage() {
         <button
           type="button"
           onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
+          className="inline-flex items-center gap-2 rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
         >
           <Plus className="h-4 w-4" />
           Add Category
         </button>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-white overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <table className="w-full text-left text-sm">
           <thead className="bg-surface text-xs uppercase text-zinc-500">
             <tr>
@@ -168,7 +168,7 @@ export function AdminCategoriesPage() {
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-md border border-zinc-200 bg-white p-6">
+          <div className="w-full max-w-md rounded-sm border border-zinc-200 bg-white p-6">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3 mb-4">
               <h2 className="text-base font-semibold text-navy">
                 {editing ? 'Edit Category' : 'New Category'}
@@ -183,20 +183,20 @@ export function AdminCategoriesPage() {
                 placeholder="Category name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
               />
               <textarea
                 rows={2}
                 placeholder="Description"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
               />
               <input
                 placeholder="Image URL"
                 value={form.imageUrl}
                 onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
               />
               <input
                 type="number"
@@ -204,7 +204,7 @@ export function AdminCategoriesPage() {
                 placeholder="Display order"
                 value={form.displayOrder}
                 onChange={(e) => setForm({ ...form, displayOrder: e.target.value })}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
               />
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -218,13 +218,13 @@ export function AdminCategoriesPage() {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-md border border-zinc-300 px-3.5 py-1.5 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md bg-navy px-4 py-1.5 text-sm font-medium text-white"
+                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white"
                 >
                   Save
                 </button>

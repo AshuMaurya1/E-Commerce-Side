@@ -53,7 +53,7 @@ export function ToastProvider({ children }) {
             <div
               key={toast.id}
               role="status"
-              className={`pointer-events-auto flex items-start gap-3 rounded-md border px-4 py-3 shadow-sm ${tone}`}
+              className={`pointer-events-auto flex items-start gap-3 rounded-sm border px-4 py-3 shadow-sm ${tone}`}
             >
               <Icon className={`h-4 w-4 mt-0.5 shrink-0 ${iconColor}`} />
               <p className="text-sm text-zinc-800 flex-1">{toast.message}</p>
