@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, IndianRupee, Package, ShoppingCart, Users } from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { ErrorState } from '../../components/ErrorState';
-import { formatCurrency, formatDate } from '../../utils/format';
+import { extractErrorMessage, formatCurrency, formatDate } from '../../utils/format';
 import { SalesChart } from '../../components/SalesChart';
 import { OrderStatusBadge } from '../../components/OrderStatusBadge';
 import { PageSpinner } from '../../components/Skeletons';
@@ -13,15 +13,24 @@ export function AdminDashboardPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    adminService
-      .getDashboard()
-      .then(setData)
-      .finally(() => setLoading(false));
+  const loadDashboard = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      setData(await adminService.getDashboard());
+    } catch (err) {
+      setError(extractErrorMessage(err, 'Could not load the admin dashboard.'));
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
+
   if (loading) return <PageSpinner />;
-  if (error) return <ErrorState message={error} actionTo="/admin" />;
+  if (error) return <ErrorState message={error} retryAction="Retry" onRetry={loadDashboard} />;
   if (!data) return null;
 
   const stats = [

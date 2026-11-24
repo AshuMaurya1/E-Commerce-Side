@@ -22,6 +22,7 @@ const EMPTY_CART = {
 export function CartProvider({ children }) {
   const { isAuthenticated, authReady } = useAuth();
   const toast = useToast();
+  const showError = toast.error;
   const [cart, setCart] = useState(EMPTY_CART);
   const [wishlist, setWishlist] = useState([]);
   const [cartLoading, setCartLoading] = useState(false);
@@ -40,12 +41,14 @@ export function CartProvider({ children }) {
       ]);
       setCart(cartData);
       setWishlist(wishlistData || []);
-    } catch {
-      // Keep prior state on transient failure
+    } catch (err) {
+      // Keep the last known cart, but surface the failure instead of silently
+      // presenting stale data as though the refresh succeeded.
+      showError(extractErrorMessage(err, 'Could not refresh your cart.'));
     } finally {
       setCartLoading(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, showError]);
 
   useEffect(() => {
     if (authReady) {

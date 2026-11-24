@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { adminService } from '../../services/adminService';
-import { formatCurrency } from '../../utils/format';
+import { extractErrorMessage, formatCurrency } from '../../utils/format';
 import { SalesChart } from '../../components/SalesChart';
 import { PageSpinner } from '../../components/Skeletons';
+import { ErrorState } from '../../components/ErrorState';
 
 export function AdminAnalyticsPage() {
   const [days, setDays] = useState(30);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
+  const loadAnalytics = useCallback(() => {
     setLoading(true);
+    setError('');
     adminService
       .getAnalytics(days)
       .then(setData)
+      .catch((err) => setError(extractErrorMessage(err, 'Could not load analytics.')))
       .finally(() => setLoading(false));
   }, [days]);
 
+  useEffect(() => {
+    loadAnalytics();
+  }, [loadAnalytics]);
+
   if (loading) return <PageSpinner />;
+  if (error) return <ErrorState message={error} retryAction="Retry" onRetry={loadAnalytics} />;
   if (!data) return null;
 
   const totalPeriodRevenue = (data.salesTrend || []).reduce((acc, p) => acc + Number(p.revenue || 0), 0);

@@ -175,6 +175,17 @@ class OrderPaymentFlowTest {
                                 orderNumber, rzpOrderId, "pay_bad_001", "tampered_sig"))))
                 .andExpect(status().isUnauthorized());
 
+        String verifiedPaymentId = "pay_verify_001";
+        String paymentSignature = PaymentService.computeHmacSha256(
+                rzpOrderId + "|" + verifiedPaymentId, "test_rzp_secret_123");
+        mockMvc.perform(post("/api/v1/payments/razorpay/verify")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + customerAToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new VerifyPaymentRequest(
+                                orderNumber, rzpOrderId, verifiedPaymentId, paymentSignature))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.status").value("CAPTURED"));
+
         // Valid webhook captures payment; duplicate webhook is safely ignored
         String webhookPayload = """
                 {
