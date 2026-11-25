@@ -56,13 +56,13 @@ export function AdminAnalyticsPage() {
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Period Gross Order Value
           </p>
-          <p className="mt-2 text-2xl font-semibold text-navy">{formatCurrency(totalPeriodRevenue)}</p>
+          <p className="tabular-nums mt-2 text-2xl font-semibold text-navy">{formatCurrency(totalPeriodRevenue)}</p>
         </div>
         <div className="rounded-sm border border-zinc-200 bg-white p-5">
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Period Orders (Non-Cancelled)
           </p>
-          <p className="mt-2 text-2xl font-semibold text-navy">{totalPeriodOrders}</p>
+          <p className="tabular-nums mt-2 text-2xl font-semibold text-navy">{totalPeriodOrders}</p>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export function AdminAnalyticsPage() {
               {Object.entries(data.ordersByStatus).map(([status, count]) => (
                 <div key={status} className="flex items-center justify-between text-sm">
                   <span className="font-mono text-xs text-zinc-700">{status}</span>
-                  <span className="font-semibold text-navy">{count}</span>
+                  <span className="tabular-nums font-semibold text-navy">{count}</span>
                 </div>
               ))}
             </div>
@@ -94,7 +94,7 @@ export function AdminAnalyticsPage() {
             {data.topProducts.map((p) => (
               <div key={p.id} className="flex items-center justify-between py-2.5 text-sm">
                 <span className="font-medium text-zinc-900 truncate pr-3">{p.name}</span>
-                <span className="text-xs text-zinc-600 shrink-0">{p.soldCount} units sold</span>
+                <span className="tabular-nums text-xs text-zinc-600 shrink-0">{p.soldCount} units sold</span>
               </div>
             ))}
           </div>

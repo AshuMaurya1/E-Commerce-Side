@@ -114,11 +114,11 @@ export function AdminOrdersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search order #, customer email, or recipient..."
-            className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
+            className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm focus:border-navy focus:outline-none"
           />
           <button
             type="submit"
-            className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800"
+            className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800 hover:bg-zinc-200/70"
           >
             Search
           </button>
@@ -127,7 +127,7 @@ export function AdminOrdersPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm"
+          className="rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm focus:border-navy focus:outline-none"
         >
           <option value="">All Statuses</option>
           {Object.keys(NEXT_TRANSITIONS).map((s) => (
@@ -144,7 +144,7 @@ export function AdminOrdersPage() {
         <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-surface text-xs uppercase text-zinc-500">
+              <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
                 <tr>
                   <th className="px-4 py-3">Order #</th>
                   <th className="px-4 py-3">Customer</th>
@@ -155,33 +155,41 @@ export function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
-                {orders.items.map((o) => (
-                  <tr key={o.id} className="hover:bg-warmwhite">
-                    <td className="px-4 py-3 font-mono text-xs font-medium text-navy">{o.orderNumber}</td>
-                    <td className="px-4 py-3">
-                      <p className="font-medium text-zinc-900">{o.customerName}</p>
-                      <p className="text-xs text-zinc-500">{o.customerEmail}</p>
-                    </td>
-                    <td className="px-4 py-3"><OrderStatusBadge status={o.status} /></td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <PaymentStatusBadge status={o.paymentStatus} />
-                        <span className="text-xs text-zinc-500">{o.paymentMethod}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 font-medium text-zinc-900">{formatCurrency(o.totalAmount)}</td>
-                    <td className="px-4 py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => openDetail(o.orderNumber)}
-                        className="inline-flex items-center gap-1 rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                        Details
-                      </button>
+                {orders.items.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-8 text-center text-sm text-zinc-500">
+                      No matching orders found.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  orders.items.map((o) => (
+                    <tr key={o.id} className="hover:bg-warmwhite">
+                      <td className="px-4 py-3 font-mono text-xs font-medium text-navy">{o.orderNumber}</td>
+                      <td className="px-4 py-3">
+                        <p className="font-medium text-zinc-900">{o.customerName}</p>
+                        <p className="text-xs text-zinc-500">{o.customerEmail}</p>
+                      </td>
+                      <td className="px-4 py-3"><OrderStatusBadge status={o.status} /></td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1.5">
+                          <PaymentStatusBadge status={o.paymentStatus} />
+                          <span className="text-xs text-zinc-500">{o.paymentMethod}</span>
+                        </div>
+                      </td>
+                      <td className="tabular-nums px-4 py-3 font-medium text-zinc-900">{formatCurrency(o.totalAmount)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          type="button"
+                          onClick={() => openDetail(o.orderNumber)}
+                          className="inline-flex items-center gap-1 rounded-sm border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -214,7 +222,7 @@ export function AdminOrdersPage() {
             </div>
 
             {(selectedOrder.cancellationReason || selectedOrder.returnReason) && (
-              <div className="rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+              <div className="rounded-sm border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
                 {selectedOrder.cancellationReason && (
                   <p><strong>Cancellation reason:</strong> {selectedOrder.cancellationReason}</p>
                 )}
@@ -224,18 +232,18 @@ export function AdminOrdersPage() {
               </div>
             )}
 
-            <div className="rounded border border-zinc-200 divide-y divide-zinc-100">
+            <div className="rounded-sm border border-zinc-200 divide-y divide-zinc-100">
               {selectedOrder.items.map((item) => (
                 <div key={item.id} className="flex justify-between px-4 py-2.5 text-sm">
                   <span>
-                    {item.productName} <span className="text-zinc-500">&times; {item.quantity}</span>
+                    {item.productName} <span className="tabular-nums text-zinc-500">&times; {item.quantity}</span>
                   </span>
-                  <span className="font-medium">{formatCurrency(item.lineTotal)}</span>
+                  <span className="tabular-nums font-medium">{formatCurrency(item.lineTotal)}</span>
                 </div>
               ))}
               <div className="flex justify-between bg-surface px-4 py-2.5 text-sm font-semibold text-navy">
                 <span>Total</span>
-                <span>{formatCurrency(selectedOrder.totalAmount)}</span>
+                <span className="tabular-nums">{formatCurrency(selectedOrder.totalAmount)}</span>
               </div>
             </div>
 
@@ -248,7 +256,7 @@ export function AdminOrdersPage() {
                   <select
                     value={targetStatus}
                     onChange={(e) => setTargetStatus(e.target.value)}
-                    className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                   >
                     {(NEXT_TRANSITIONS[selectedOrder.status] || []).map((st) => (
                       <option key={st} value={st}>{st}</option>
@@ -258,7 +266,7 @@ export function AdminOrdersPage() {
                     placeholder="Status note (optional)"
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
-                    className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+                    className="rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
                   />
                 </div>
                 <button

@@ -253,7 +253,7 @@ export function AdminProductsPage() {
         <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-surface text-xs uppercase text-zinc-500">
+              <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
                 <tr>
                   <th className="px-4 py-3">Product</th>
                   <th className="px-4 py-3">SKU</th>
@@ -265,62 +265,70 @@ export function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
-                {products.items.map((p) => (
-                  <tr key={p.id} className="hover:bg-warmwhite">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 shrink-0 rounded border border-zinc-200 bg-surface overflow-hidden">
-                          {p.primaryImageUrl && (
-                            <img src={p.primaryImageUrl} alt={p.name} className="h-full w-full object-cover" />
-                          )}
-                        </div>
-                        <span className="font-medium text-zinc-900">{p.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 font-mono text-xs text-zinc-600">{p.sku}</td>
-                    <td className="px-4 py-3 text-zinc-600">{p.categoryName}</td>
-                    <td className="px-4 py-3">
-                      <span className="font-medium text-zinc-900">{formatCurrency(p.effectivePrice)}</span>
-                      {p.discountPrice != null && (
-                        <span className="ml-1.5 text-xs text-zinc-400 line-through">
-                          {formatCurrency(p.price)}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`font-medium ${
-                          p.stockQuantity <= p.lowStockThreshold ? 'text-amber-700' : 'text-zinc-900'
-                        }`}
-                      >
-                        {p.stockQuantity}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleStatus(p)}
-                        className={`rounded border px-2 py-0.5 text-xs font-medium ${
-                          p.active
-                            ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                            : 'border-zinc-200 bg-zinc-100 text-zinc-600'
-                        }`}
-                      >
-                        {p.active ? 'Active' : 'Inactive'}
-                      </button>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => openEdit(p.id)}
-                        className="inline-flex items-center gap-1 rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
-                      >
-                        <Edit2 className="h-3.5 w-3.5" />
-                        Edit
-                      </button>
+                {products.items.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="px-4 py-8 text-center text-sm text-zinc-500">
+                      No matching products found.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  products.items.map((p) => (
+                    <tr key={p.id} className="hover:bg-warmwhite">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 shrink-0 rounded-sm border border-zinc-200 bg-surface overflow-hidden">
+                            {p.primaryImageUrl && (
+                              <img src={p.primaryImageUrl} alt={p.name} className="h-full w-full object-cover" />
+                            )}
+                          </div>
+                          <span className="font-medium text-zinc-900">{p.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-zinc-600">{p.sku}</td>
+                      <td className="px-4 py-3 text-zinc-600">{p.categoryName}</td>
+                      <td className="tabular-nums px-4 py-3">
+                        <span className="font-medium text-zinc-900">{formatCurrency(p.effectivePrice)}</span>
+                        {p.discountPrice != null && (
+                          <span className="ml-1.5 text-xs text-zinc-400 line-through">
+                            {formatCurrency(p.price)}
+                          </span>
+                        )}
+                      </td>
+                      <td className="tabular-nums px-4 py-3">
+                        <span
+                          className={`font-medium ${
+                            p.stockQuantity <= p.lowStockThreshold ? 'text-amber-700' : 'text-zinc-900'
+                          }`}
+                        >
+                          {p.stockQuantity}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleStatus(p)}
+                          className={`rounded-sm border px-2 py-0.5 text-xs font-medium ${
+                            p.active
+                              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                              : 'border-zinc-200 bg-zinc-100 text-zinc-600'
+                          }`}
+                        >
+                          {p.active ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          type="button"
+                          onClick={() => openEdit(p.id)}
+                          className="inline-flex items-center gap-1 rounded-sm border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
+                        >
+                          <Edit2 className="h-3.5 w-3.5" />
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

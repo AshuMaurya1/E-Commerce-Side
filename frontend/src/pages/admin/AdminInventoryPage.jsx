@@ -84,7 +84,7 @@ export function AdminInventoryPage() {
               required
               value={adjustForm.productId}
               onChange={(e) => setAdjustForm({ ...adjustForm, productId: e.target.value })}
-              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
             >
               {allProducts.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -102,7 +102,7 @@ export function AdminInventoryPage() {
               required
               value={adjustForm.quantityDelta}
               onChange={(e) => setAdjustForm({ ...adjustForm, quantityDelta: e.target.value })}
-              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
             />
           </div>
           <div>
@@ -111,7 +111,7 @@ export function AdminInventoryPage() {
               value={adjustForm.note}
               onChange={(e) => setAdjustForm({ ...adjustForm, note: e.target.value })}
               placeholder="Supplier restock PO-402"
-              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+              className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
             />
           </div>
           <button
@@ -142,7 +142,7 @@ export function AdminInventoryPage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="rounded bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                    <span className="tabular-nums rounded-sm border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800">
                       {p.stockQuantity} units
                     </span>
                     <button
@@ -167,7 +167,7 @@ export function AdminInventoryPage() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-surface text-xs uppercase text-zinc-500">
+            <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
               <tr>
                 <th className="px-4 py-2.5">Time</th>
                 <th className="px-4 py-2.5">Product</th>
@@ -178,22 +178,30 @@ export function AdminInventoryPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {logs.items.map((l) => (
-                <tr key={l.id}>
-                  <td className="px-4 py-2.5 text-xs text-zinc-500 whitespace-nowrap">
-                    {formatDateTime(l.createdAt)}
+              {logs.items.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-8 text-center text-sm text-zinc-500">
+                    No inventory changes recorded yet.
                   </td>
-                  <td className="px-4 py-2.5 font-medium text-zinc-900">{l.productName}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-zinc-600">{l.actionType}</td>
-                  <td className={`px-4 py-2.5 font-semibold ${l.quantityDelta >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>
-                    {l.quantityDelta >= 0 ? `+${l.quantityDelta}` : l.quantityDelta}
-                  </td>
-                  <td className="px-4 py-2.5 text-xs text-zinc-700">
-                    {l.previousStock} &rarr; {l.newStock}
-                  </td>
-                  <td className="px-4 py-2.5 text-xs text-zinc-600">{l.note}</td>
                 </tr>
-              ))}
+              ) : (
+                logs.items.map((l) => (
+                  <tr key={l.id} className="hover:bg-warmwhite">
+                    <td className="tabular-nums px-4 py-2.5 text-xs text-zinc-500 whitespace-nowrap">
+                      {formatDateTime(l.createdAt)}
+                    </td>
+                    <td className="px-4 py-2.5 font-medium text-zinc-900">{l.productName}</td>
+                    <td className="px-4 py-2.5 font-mono text-xs text-zinc-600">{l.actionType}</td>
+                    <td className={`tabular-nums px-4 py-2.5 font-semibold ${l.quantityDelta >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>
+                      {l.quantityDelta >= 0 ? `+${l.quantityDelta}` : l.quantityDelta}
+                    </td>
+                    <td className="tabular-nums px-4 py-2.5 text-xs text-zinc-700">
+                      {l.previousStock} &rarr; {l.newStock}
+                    </td>
+                    <td className="px-4 py-2.5 text-xs text-zinc-600">{l.note}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

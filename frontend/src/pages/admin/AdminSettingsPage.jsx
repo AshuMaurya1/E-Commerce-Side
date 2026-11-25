@@ -122,16 +122,16 @@ export function AdminSettingsPage() {
 
       <div className="rounded-sm border border-zinc-200 bg-white p-6">
         <h2 className="text-sm font-semibold text-navy mb-3">Platform Rules</h2>
-        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-          <div className="rounded bg-surface p-3.5">
+        <dl className="tabular-nums grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+          <div className="rounded-sm border border-zinc-200/80 bg-surface p-3.5">
             <dt className="text-xs text-zinc-500">Free Shipping Threshold</dt>
             <dd className="mt-1 font-semibold text-navy">₹999</dd>
           </div>
-          <div className="rounded bg-surface p-3.5">
+          <div className="rounded-sm border border-zinc-200/80 bg-surface p-3.5">
             <dt className="text-xs text-zinc-500">Flat Shipping Fee</dt>
             <dd className="mt-1 font-semibold text-navy">₹79</dd>
           </div>
-          <div className="rounded bg-surface p-3.5">
+          <div className="rounded-sm border border-zinc-200/80 bg-surface p-3.5">
             <dt className="text-xs text-zinc-500">Unpaid Order Expiry</dt>
             <dd className="mt-1 font-semibold text-navy">15 minutes</dd>
           </div>
