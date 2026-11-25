@@ -7,7 +7,7 @@ spring:
   config:
     import: optional:file:.env[.properties],optional:file:../.env[.properties]
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
+    active: ${SPRING_PROFILES_ACTIVE:prod}
   jackson:
     default-property-inclusion: non_null
     serialization:
@@ -27,21 +27,25 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:shopsphere-local-dev-secret-key-at-least-32-bytes-long-2026}
+    secret: ${JWT_SECRET:}
     access-expiration-ms: ${JWT_ACCESS_EXPIRATION_MS:900000}
     refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
   cors:
     allowed-origins: ${FRONTEND_URL:http://localhost:5173}
   cookie:
-    secure: ${COOKIE_SECURE:false}
+    secure: ${COOKIE_SECURE:true}
   seed:
-    admin-email: ${APP_SEED_ADMIN_EMAIL:admin@shopsphere.local}
-    admin-password: ${APP_SEED_ADMIN_PASSWORD:Admin@12345}
-    sample-data: ${APP_SEED_SAMPLE_DATA:true}
+    admin-email: ${APP_SEED_ADMIN_EMAIL:}
+    admin-password: ${APP_SEED_ADMIN_PASSWORD:}
+    # Demo catalog data is opt-in. Production and local databases stay empty
+    # until real catalog records are created or imported.
+    sample-data: ${APP_SEED_SAMPLE_DATA:false}
   razorpay:
     key-id: ${RAZORPAY_KEY_ID:}
     key-secret: ${RAZORPAY_KEY_SECRET:}
     webhook-secret: ${RAZORPAY_WEBHOOK_SECRET:}
+  payment:
+    simulation-enabled: ${APP_PAYMENT_SIMULATION_ENABLED:false}
   cloudinary:
     cloud-name: ${CLOUDINARY_CLOUD_NAME:}
     api-key: ${CLOUDINARY_API_KEY:}

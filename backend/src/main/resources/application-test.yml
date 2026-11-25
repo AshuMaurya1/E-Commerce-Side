@@ -10,5 +10,13 @@ spring:
     show-sql: false
 
 app:
+  jwt:
+    secret: test-only-jwt-signing-key-not-for-real-environments
+  cookie:
+    secure: false
   seed:
+    admin-email: admin@shopsphere.local
+    admin-password: Admin@12345
     sample-data: false
+  payment:
+    simulation-enabled: true

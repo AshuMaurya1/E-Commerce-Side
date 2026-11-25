@@ -185,13 +185,13 @@ export function HomePage() {
         <section className="rounded-sm bg-navy px-6 py-8 sm:px-10 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-400">
-              First Order Offer
+              Shop ShopSphere
             </p>
             <h3 className="mt-1.5 text-xl font-semibold tracking-tight">
-              Take 10% off your first order with code <span className="font-mono">WELCOME10</span>
+              Find considered essentials for everyday use.
             </h3>
             <p className="mt-1 text-sm text-zinc-300">
-              Applicable on orders above ₹500 (up to ₹500 off) directly in your cart.
+              Browse the current catalog and see live availability.
             </p>
           </div>
           <Link

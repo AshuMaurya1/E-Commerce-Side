@@ -68,6 +68,9 @@ public class PaymentService {
         if (order.getPaymentMethod() != PaymentMethod.RAZORPAY) {
             throw new BadRequestException("Order is not configured for online Razorpay payment");
         }
+        if (!appProperties.getRazorpay().isConfigured() && !appProperties.getPayment().isSimulationEnabled()) {
+            throw new BadRequestException("Online payments are not configured");
+        }
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
             throw new BadRequestException("Order is not awaiting payment");
         }
@@ -156,8 +159,8 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse simulateTestSuccess(Long userId, String orderNumber) {
-        if (appProperties.getRazorpay().isConfigured()) {
-            throw new ForbiddenException("Simulation is disabled when Razorpay credentials are configured");
+        if (appProperties.getRazorpay().isConfigured() || !appProperties.getPayment().isSimulationEnabled()) {
+            throw new ForbiddenException("Payment simulation is disabled");
         }
         Order order = orderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));

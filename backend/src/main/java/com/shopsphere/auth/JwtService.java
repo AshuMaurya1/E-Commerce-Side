@@ -24,6 +24,9 @@ public class JwtService {
     }
 
     private SecretKey deriveKey(String secret) {
+        if (secret == null || secret.length() < 32) {
+            throw new IllegalStateException("JWT_SECRET must contain at least 32 characters");
+        }
         try {
             byte[] hash = MessageDigest.getInstance("SHA-256")
                     .digest(secret.getBytes(StandardCharsets.UTF_8));

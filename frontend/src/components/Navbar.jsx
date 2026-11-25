@@ -74,8 +74,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 bg-white border-b border-zinc-200">
       {/* Subtle Store Announcement */}
       <div className="bg-navy text-zinc-200 text-[11px] tracking-wide py-1.5 px-4 text-center">
-        Complimentary shipping on orders over ₹999 &middot; Use code{' '}
-        <span className="font-mono font-medium text-white">WELCOME10</span> at checkout
+        Complimentary shipping on qualifying orders
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

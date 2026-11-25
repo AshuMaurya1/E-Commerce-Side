@@ -13,6 +13,7 @@ public class AppProperties {
     private Cookie cookie = new Cookie();
     private Seed seed = new Seed();
     private Razorpay razorpay = new Razorpay();
+    private Payment payment = new Payment();
     private Cloudinary cloudinary = new Cloudinary();
     private Shipping shipping = new Shipping();
 
@@ -75,6 +76,13 @@ public class AppProperties {
         }
     }
 
+    public static class Payment {
+        private boolean simulationEnabled = false;
+
+        public boolean isSimulationEnabled() { return simulationEnabled; }
+        public void setSimulationEnabled(boolean simulationEnabled) { this.simulationEnabled = simulationEnabled; }
+    }
+
     public static class Cloudinary {
         private String cloudName = "";
         private String apiKey = "";
@@ -108,6 +116,7 @@ public class AppProperties {
     public Cookie getCookie() { return cookie; }
     public Seed getSeed() { return seed; }
     public Razorpay getRazorpay() { return razorpay; }
+    public Payment getPayment() { return payment; }
     public Cloudinary getCloudinary() { return cloudinary; }
     public Shipping getShipping() { return shipping; }
 }
