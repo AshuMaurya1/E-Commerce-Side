@@ -2,41 +2,26 @@ services:
   - type: web
     name: shopsphere-backend
     runtime: docker
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./
     healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
-        value: prod
+        value: dev
+      - key: FRONTEND_URL
+        value: https://shopsphere-three-plum.vercel.app
       - key: COOKIE_SECURE
         value: true
       - key: COOKIE_SAME_SITE
         value: None
       - key: APP_PAYMENT_SIMULATION_ENABLED
-        value: false
+        value: true
+      - key: APP_SEED_SAMPLE_DATA
+        value: true
+      - key: APP_SEED_ADMIN_EMAIL
+        value: admin@shopsphere.local
+      - key: APP_SEED_ADMIN_PASSWORD
+        value: Admin@12345
       - key: JWT_SECRET
         generateValue: true
-      - key: DB_USE_SSL
-        value: true
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        value: 3306
-      - key: DB_NAME
-        sync: false
-      - key: DB_USERNAME
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: FRONTEND_URL
-        sync: false
-      - key: APP_SEED_ADMIN_EMAIL
-        sync: false
-      - key: APP_SEED_ADMIN_PASSWORD
-        sync: false
-      - key: CLOUDINARY_CLOUD_NAME
-        sync: false
-      - key: CLOUDINARY_API_KEY
-        sync: false
-      - key: CLOUDINARY_API_SECRET
-        sync: false
