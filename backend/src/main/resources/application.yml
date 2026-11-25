@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${PORT:${SERVER_PORT:8080}}
 
 spring:
   application:
@@ -34,6 +34,7 @@ app:
     allowed-origins: ${FRONTEND_URL:http://localhost:5173,http://localhost:5174}
   cookie:
     secure: ${COOKIE_SECURE:true}
+    same-site: ${COOKIE_SAME_SITE:Strict}
   seed:
     admin-email: ${APP_SEED_ADMIN_EMAIL:}
     admin-password: ${APP_SEED_ADMIN_PASSWORD:}

@@ -1,17 +1,8 @@
 package com.shopsphere.auth;
 
-import com.shopsphere.auth.AuthService.AuthTokensResult;
-import com.shopsphere.auth.dto.AuthDtos.AuthResponse;
-import com.shopsphere.auth.dto.AuthDtos.LoginRequest;
-import com.shopsphere.auth.dto.AuthDtos.RegisterRequest;
-import com.shopsphere.common.ApiResponse;
-import com.shopsphere.common.exception.ForbiddenException;
-import com.shopsphere.config.AppProperties;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import java.time.Duration;
 import java.util.Arrays;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,6 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.shopsphere.auth.AuthService.AuthTokensResult;
+import com.shopsphere.auth.dto.AuthDtos.AuthResponse;
+import com.shopsphere.auth.dto.AuthDtos.LoginRequest;
+import com.shopsphere.auth.dto.AuthDtos.RegisterRequest;
+import com.shopsphere.common.ApiResponse;
+import com.shopsphere.common.exception.ForbiddenException;
+import com.shopsphere.config.AppProperties;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -91,7 +94,7 @@ public class AuthController {
         ResponseCookie cookie = ResponseCookie.from(REFRESH_COOKIE_NAME, value)
                 .httpOnly(true)
                 .secure(appProperties.getCookie().isSecure())
-                .sameSite("Strict")
+                .sameSite(appProperties.getCookie().getSameSite())
                 .path("/api/v1/auth")
                 .maxAge(maxAge)
                 .build();

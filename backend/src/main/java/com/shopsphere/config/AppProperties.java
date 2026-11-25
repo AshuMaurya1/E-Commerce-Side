@@ -1,6 +1,7 @@
 package com.shopsphere.config;
 
 import java.math.BigDecimal;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +40,12 @@ public class AppProperties {
 
     public static class Cookie {
         private boolean secure = false;
+        private String sameSite = "Strict";
 
         public boolean isSecure() { return secure; }
         public void setSecure(boolean secure) { this.secure = secure; }
+        public String getSameSite() { return sameSite; }
+        public void setSameSite(String sameSite) { this.sameSite = sameSite; }
     }
 
     public static class Seed {
