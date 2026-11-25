@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   Heart,
@@ -23,6 +23,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef(null);
 
   useEffect(() => {
     let active = true;
@@ -36,6 +37,24 @@ export function Navbar() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!accountMenuOpen) return undefined;
+    const handlePointerDown = (e) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(e.target)) {
+        setAccountMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setAccountMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [accountMenuOpen]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -138,10 +157,12 @@ export function Navbar() {
             </Link>
 
             {isAuthenticated ? (
-              <div className="relative hidden sm:block ml-1">
+              <div ref={accountMenuRef} className="relative hidden sm:block ml-1">
                 <button
                   type="button"
                   onClick={() => setAccountMenuOpen((o) => !o)}
+                  aria-expanded={accountMenuOpen}
+                  aria-haspopup="menu"
                   className="inline-flex items-center gap-2 rounded-sm border border-zinc-200 bg-white px-3 py-1.5 text-[13px] font-medium text-zinc-800 hover:border-zinc-300"
                 >
                   <User className="h-3.5 w-3.5 text-zinc-500" />
@@ -150,8 +171,8 @@ export function Navbar() {
 
                 {accountMenuOpen && (
                   <div
-                    onMouseLeave={() => setAccountMenuOpen(false)}
-                    className="absolute right-0 mt-1.5 w-52 rounded-sm border border-zinc-200 bg-white py-1 shadow-sm"
+                    role="menu"
+                    className="absolute right-0 mt-1.5 w-52 rounded-sm border border-zinc-200 bg-white py-1"
                   >
                     <div className="border-b border-zinc-100 px-3.5 py-2.5">
                       <p className="text-xs font-semibold text-zinc-900 truncate">{user?.fullName}</p>

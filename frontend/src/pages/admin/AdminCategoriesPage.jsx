@@ -3,21 +3,27 @@ import { Edit2, Plus, Trash2, X } from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage } from '../../utils/format';
+import { ErrorState } from '../../components/ErrorState';
+import { TableSkeleton } from '../../components/Skeletons';
 
 export function AdminCategoriesPage() {
   const toast = useToast();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ name: '', description: '', imageUrl: '', displayOrder: 0, active: true });
 
   const load = async () => {
     setLoading(true);
+    setError('');
     try {
       setCategories(await adminService.getCategories());
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load categories.');
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -106,9 +112,15 @@ export function AdminCategoriesPage() {
         </button>
       </div>
 
+      {loading ? (
+        <TableSkeleton rows={5} cols={6} />
+      ) : error ? (
+        <ErrorState message={error} retryAction="Retry" onRetry={load} />
+      ) : (
       <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-surface text-xs uppercase text-zinc-500">
+          <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Slug</th>
@@ -119,20 +131,24 @@ export function AdminCategoriesPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-100">
-            {loading ? (
-              <tr><td colSpan={6} className="px-4 py-6 text-center text-zinc-500">Loading...</td></tr>
+            {categories.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-zinc-500">
+                  No categories found.
+                </td>
+              </tr>
             ) : (
               categories.map((cat) => (
                 <tr key={cat.id} className="hover:bg-warmwhite">
                   <td className="px-4 py-3 font-medium text-zinc-900">{cat.name}</td>
                   <td className="px-4 py-3 font-mono text-xs text-zinc-500">{cat.slug}</td>
-                  <td className="px-4 py-3 text-zinc-600">{cat.displayOrder}</td>
-                  <td className="px-4 py-3 text-zinc-600">{cat.productCount}</td>
+                  <td className="tabular-nums px-4 py-3 text-zinc-600">{cat.displayOrder}</td>
+                  <td className="tabular-nums px-4 py-3 text-zinc-600">{cat.productCount}</td>
                   <td className="px-4 py-3">
                     <button
                       type="button"
                       onClick={() => handleToggle(cat)}
-                      className={`rounded border px-2 py-0.5 text-xs font-medium ${
+                      className={`rounded-sm border px-2 py-0.5 text-xs font-medium ${
                         cat.active
                           ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
                           : 'border-zinc-200 bg-zinc-100 text-zinc-600'
@@ -141,11 +157,11 @@ export function AdminCategoriesPage() {
                       {cat.active ? 'Active' : 'Inactive'}
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-right space-x-2">
+                  <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
                     <button
                       type="button"
                       onClick={() => openEdit(cat)}
-                      className="inline-flex items-center gap-1 rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700"
+                      className="inline-flex items-center gap-1 rounded-sm border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
                     >
                       <Edit2 className="h-3.5 w-3.5" />
                       Edit
@@ -153,7 +169,7 @@ export function AdminCategoriesPage() {
                     <button
                       type="button"
                       onClick={() => handleDelete(cat)}
-                      className="inline-flex items-center rounded border border-red-200 p-1 text-red-600 hover:bg-red-50"
+                      className="inline-flex items-center rounded-sm border border-red-200 p-1 text-red-600 hover:bg-red-50"
                       aria-label={`Delete ${cat.name}`}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -164,7 +180,9 @@ export function AdminCategoriesPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
+      )}
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -177,36 +195,48 @@ export function AdminCategoriesPage() {
                 <X className="h-4 w-4 text-zinc-500" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <input
-                required
-                placeholder="Category name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-              />
-              <textarea
-                rows={2}
-                placeholder="Description"
-                value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-              />
-              <input
-                placeholder="Image URL"
-                value={form.imageUrl}
-                onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-              />
-              <input
-                type="number"
-                min="0"
-                placeholder="Display order"
-                value={form.displayOrder}
-                onChange={(e) => setForm({ ...form, displayOrder: e.target.value })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-              />
-              <label className="flex items-center gap-2 text-sm">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Category Name *</label>
+                <input
+                  required
+                  placeholder="Audio & Tech"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  placeholder="Short description for storefront listings"
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Image URL</label>
+                <input
+                  placeholder="https://..."
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Display Order</label>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={form.displayOrder}
+                  onChange={(e) => setForm({ ...form, displayOrder: e.target.value })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                />
+              </div>
+              <label className="flex items-center gap-2 text-sm text-zinc-700">
                 <input
                   type="checkbox"
                   checked={form.active}
@@ -214,17 +244,17 @@ export function AdminCategoriesPage() {
                 />
                 Active
               </label>
-              <div className="flex justify-end gap-2 pt-3">
+              <div className="flex justify-end gap-2 border-t border-zinc-100 pt-3">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm text-zinc-700 hover:bg-surface"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white"
+                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white hover:bg-navy-800"
                 >
                   Save
                 </button>

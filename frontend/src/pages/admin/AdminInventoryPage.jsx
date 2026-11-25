@@ -4,16 +4,19 @@ import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage, formatDateTime } from '../../utils/format';
 import { Pagination } from '../../components/Pagination';
+import { ErrorState } from '../../components/ErrorState';
 
 export function AdminInventoryPage() {
   const toast = useToast();
   const [lowStock, setLowStock] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [logs, setLogs] = useState({ items: [], page: 0, totalPages: 0 });
+  const [error, setError] = useState('');
   const [adjustForm, setAdjustForm] = useState({ productId: '', quantityDelta: '10', note: '' });
   const [submitting, setSubmitting] = useState(false);
 
   const loadAll = async (logPage = 0) => {
+    setError('');
     try {
       const [low, prods, logData] = await Promise.all([
         adminService.getLowStock(),
@@ -27,7 +30,9 @@ export function AdminInventoryPage() {
         setAdjustForm((f) => ({ ...f, productId: String(prods.items[0].id) }));
       }
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load inventory data.');
+      setError(msg);
+      toast.error(msg);
     }
   };
 
@@ -61,6 +66,10 @@ export function AdminInventoryPage() {
         <h1 className="text-2xl font-semibold text-navy">Inventory Management</h1>
         <p className="text-sm text-zinc-500">Monitor low-stock alerts, adjust stock safely, and inspect audit logs.</p>
       </div>
+
+      {error && (
+        <ErrorState message={error} retryAction="Retry" onRetry={() => loadAll(logs.page)} />
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Manual Adjustment */}

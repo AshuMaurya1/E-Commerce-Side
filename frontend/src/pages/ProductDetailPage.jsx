@@ -8,6 +8,7 @@ import { useToast } from '../context/ToastContext';
 import { extractErrorMessage, formatCurrency, formatDate } from '../utils/format';
 import { ProductCard } from '../components/ProductCard';
 import { PageSpinner } from '../components/Skeletons';
+import { ErrorState } from '../components/ErrorState';
 
 export function ProductDetailPage() {
   const { slug } = useParams();
@@ -63,11 +64,8 @@ export function ProductDetailPage() {
   if (loading) return <PageSpinner />;
   if (error || !product) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold text-zinc-900">{error || 'Product not found'}</h1>
-        <Link to="/products" className="mt-4 inline-block text-sm font-medium text-emerald-700 hover:underline">
-          Return to catalog
-        </Link>
+      <div className="mx-auto max-w-3xl px-4 py-16">
+        <ErrorState message={error || 'Product not found'} actionTo="/products" />
       </div>
     );
   }
@@ -151,7 +149,7 @@ export function ProductDetailPage() {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <nav className="flex items-center gap-2 text-xs text-zinc-500 mb-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-zinc-500 mb-6">
           <Link to="/" className="hover:text-navy">Home</Link>
           <span>/</span>
           <Link to={`/products?category=${encodeURIComponent(product.categorySlug)}`} className="hover:text-navy">
@@ -349,7 +347,7 @@ export function ProductDetailPage() {
                     <select
                       value={rating}
                       onChange={(e) => setRating(Number(e.target.value))}
-                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                     >
                       <option value={5}>5 Stars — Excellent</option>
                       <option value={4}>4 Stars — Very Good</option>
@@ -366,7 +364,7 @@ export function ProductDetailPage() {
                       value={reviewTitle}
                       onChange={(e) => setReviewTitle(e.target.value)}
                       placeholder="Summary of your experience"
-                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                     />
                   </div>
                   <div>
@@ -378,7 +376,7 @@ export function ProductDetailPage() {
                       value={reviewComment}
                       onChange={(e) => setReviewComment(e.target.value)}
                       placeholder="Share how this product performs..."
-                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                     />
                   </div>
                   <button

@@ -5,22 +5,28 @@ import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage, formatCurrency, formatDate } from '../../utils/format';
 import { OrderStatusBadge } from '../../components/OrderStatusBadge';
 import { Pagination } from '../../components/Pagination';
+import { ErrorState } from '../../components/ErrorState';
+import { TableSkeleton } from '../../components/Skeletons';
 
 export function AdminCustomersPage() {
   const toast = useToast();
   const [data, setData] = useState({ items: [], page: 0, totalPages: 0 });
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customerOrders, setCustomerOrders] = useState({ items: [], page: 0, totalPages: 0 });
 
   const loadCustomers = async (page = 0) => {
     setLoading(true);
+    setError('');
     try {
       setData(await adminService.getCustomers({ search: search || undefined, page, size: 15 }));
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load customers.');
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -69,20 +75,25 @@ export function AdminCustomersPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by customer name or email..."
-          className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm"
+          className="flex-1 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm focus:border-navy focus:outline-none"
         />
         <button
           type="submit"
-          className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium"
+          className="rounded-sm border border-zinc-300 bg-surface px-3 py-1.5 text-sm font-medium text-zinc-800 hover:bg-zinc-200/70"
         >
           Search
         </button>
       </form>
 
+      {loading ? (
+        <TableSkeleton rows={6} cols={6} />
+      ) : error ? (
+        <ErrorState message={error} retryAction="Retry" onRetry={() => loadCustomers(data.page)} />
+      ) : (
       <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-surface text-xs uppercase text-zinc-500">
+            <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Email</th>
@@ -93,22 +104,20 @@ export function AdminCustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {loading ? (
-                <tr><td colSpan={6} className="px-4 py-6 text-center text-zinc-500">Loading...</td></tr>
-              ) : data.items.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-6 text-center text-zinc-500">No customers found.</td></tr>
+              {data.items.length === 0 ? (
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-zinc-500">No customers found.</td></tr>
               ) : (
                 data.items.map((c) => (
                   <tr key={c.id} className="hover:bg-warmwhite">
                     <td className="px-4 py-3 font-medium text-zinc-900">{c.fullName}</td>
                     <td className="px-4 py-3 text-zinc-600">{c.email}</td>
-                    <td className="px-4 py-3 text-zinc-700">{c.totalOrders}</td>
-                    <td className="px-4 py-3 text-xs text-zinc-500">{formatDate(c.createdAt)}</td>
+                    <td className="tabular-nums px-4 py-3 text-zinc-700">{c.totalOrders}</td>
+                    <td className="tabular-nums px-4 py-3 text-xs text-zinc-500">{formatDate(c.createdAt)}</td>
                     <td className="px-4 py-3">
                       <button
                         type="button"
                         onClick={() => handleToggleStatus(c)}
-                        className={`rounded border px-2 py-0.5 text-xs font-medium ${
+                        className={`rounded-sm border px-2 py-0.5 text-xs font-medium ${
                           c.active
                             ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
                             : 'border-red-200 bg-red-50 text-red-600'
@@ -121,7 +130,7 @@ export function AdminCustomersPage() {
                       <button
                         type="button"
                         onClick={() => viewOrders(c)}
-                        className="inline-flex items-center gap-1 rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700"
+                        className="inline-flex items-center gap-1 rounded-sm border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-surface"
                       >
                         <Eye className="h-3.5 w-3.5" />
                         Orders
@@ -137,6 +146,7 @@ export function AdminCustomersPage() {
           <Pagination page={data.page} totalPages={data.totalPages} onPageChange={loadCustomers} />
         </div>
       </div>
+      )}
 
       {selectedCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

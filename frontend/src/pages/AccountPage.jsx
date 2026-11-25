@@ -9,6 +9,7 @@ import { extractErrorMessage, formatCurrency, formatDate } from '../utils/format
 import { ProductCard } from '../components/ProductCard';
 import { OrderStatusBadge, PaymentStatusBadge } from '../components/OrderStatusBadge';
 import { EmptyState } from '../components/EmptyState';
+import { ErrorState } from '../components/ErrorState';
 import { Pagination } from '../components/Pagination';
 
 export function AccountPage() {
@@ -44,6 +45,7 @@ export function AccountPage() {
 
   const [ordersData, setOrdersData] = useState({ items: [], page: 0, totalPages: 0 });
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersError, setOrdersError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -61,11 +63,14 @@ export function AccountPage() {
 
   const loadOrders = async (page) => {
     setOrdersLoading(true);
+    setOrdersError('');
     try {
       const data = await orderService.listOrders(page, 8);
       setOrdersData(data);
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load order history.');
+      setOrdersError(msg);
+      toast.error(msg);
     } finally {
       setOrdersLoading(false);
     }
@@ -182,6 +187,12 @@ export function AccountPage() {
           <div>
             {ordersLoading ? (
               <div className="h-40 rounded-sm border border-zinc-200 bg-surface animate-pulse" />
+            ) : ordersError ? (
+              <ErrorState
+                message={ordersError}
+                retryAction="Retry"
+                onRetry={() => loadOrders(ordersData.page)}
+              />
             ) : ordersData.items.length === 0 ? (
               <EmptyState
                 icon={Package}
@@ -274,66 +285,90 @@ export function AccountPage() {
             </div>
 
             {showAddrForm && (
-              <form onSubmit={handleAddAddress} className="rounded-sm border border-zinc-200 bg-warmwhite p-5 space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input
-                    required
-                    placeholder="Recipient name"
-                    value={addrForm.recipientName}
-                    onChange={(e) => setAddrForm({ ...addrForm, recipientName: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    required
-                    placeholder="Phone"
-                    value={addrForm.phone}
-                    onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    required
-                    placeholder="Address line 1"
-                    value={addrForm.line1}
-                    onChange={(e) => setAddrForm({ ...addrForm, line1: e.target.value })}
-                    className="sm:col-span-2 rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    placeholder="Line 2 (optional)"
-                    value={addrForm.line2}
-                    onChange={(e) => setAddrForm({ ...addrForm, line2: e.target.value })}
-                    className="sm:col-span-2 rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    required
-                    placeholder="City"
-                    value={addrForm.city}
-                    onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    required
-                    placeholder="State"
-                    value={addrForm.state}
-                    onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    required
-                    placeholder="Postal code"
-                    value={addrForm.postalCode}
-                    onChange={(e) => setAddrForm({ ...addrForm, postalCode: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
-                  <input
-                    placeholder="Label (Home, Work)"
-                    value={addrForm.label}
-                    onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
-                    className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                  />
+              <form onSubmit={handleAddAddress} className="rounded-sm border border-zinc-200 bg-warmwhite p-5 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Recipient name</label>
+                    <input
+                      required
+                      placeholder="Aarav Mehta"
+                      value={addrForm.recipientName}
+                      onChange={(e) => setAddrForm({ ...addrForm, recipientName: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Phone</label>
+                    <input
+                      required
+                      placeholder="9876543210"
+                      value={addrForm.phone}
+                      onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Address line 1</label>
+                    <input
+                      required
+                      placeholder="House / Street / Locality"
+                      value={addrForm.line1}
+                      onChange={(e) => setAddrForm({ ...addrForm, line1: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Line 2 (optional)</label>
+                    <input
+                      placeholder="Apartment, suite, landmark"
+                      value={addrForm.line2}
+                      onChange={(e) => setAddrForm({ ...addrForm, line2: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">City</label>
+                    <input
+                      required
+                      placeholder="Bengaluru"
+                      value={addrForm.city}
+                      onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">State</label>
+                    <input
+                      required
+                      placeholder="Karnataka"
+                      value={addrForm.state}
+                      onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Postal code</label>
+                    <input
+                      required
+                      placeholder="560001"
+                      value={addrForm.postalCode}
+                      onChange={(e) => setAddrForm({ ...addrForm, postalCode: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-700 mb-1">Label</label>
+                    <input
+                      placeholder="Home, Work"
+                      value={addrForm.label}
+                      onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
+                      className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                    />
+                  </div>
                 </div>
                 <button
                   type="submit"
-                  className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800"
+                  className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 transition-colors"
                 >
                   Save Address
                 </button>
@@ -411,7 +446,7 @@ export function AccountPage() {
                   required
                   value={profileForm.fullName}
                   onChange={(e) => setProfileForm({ ...profileForm, fullName: e.target.value })}
-                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                 />
               </div>
               <div>
@@ -419,7 +454,7 @@ export function AccountPage() {
                 <input
                   value={profileForm.phone}
                   onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                 />
               </div>
               <button
@@ -440,7 +475,7 @@ export function AccountPage() {
                   required
                   value={pwForm.currentPassword}
                   onChange={(e) => setPwForm({ ...pwForm, currentPassword: e.target.value })}
-                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                 />
               </div>
               <div>
@@ -451,7 +486,7 @@ export function AccountPage() {
                   value={pwForm.newPassword}
                   onChange={(e) => setPwForm({ ...pwForm, newPassword: e.target.value })}
                   placeholder="Min 8 chars, upper, lower, number"
-                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                 />
               </div>
               <button

@@ -6,6 +6,7 @@ import { useToast } from '../context/ToastContext';
 import { extractErrorMessage, formatCurrency, formatDateTime } from '../utils/format';
 import { OrderStatusBadge, PaymentStatusBadge } from '../components/OrderStatusBadge';
 import { PageSpinner } from '../components/Skeletons';
+import { ErrorState } from '../components/ErrorState';
 
 const CANCELLABLE = new Set(['PENDING_PAYMENT', 'PLACED', 'CONFIRMED', 'PACKED']);
 
@@ -61,11 +62,13 @@ export function OrderDetailPage() {
   if (loading) return <PageSpinner />;
   if (error || !order) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-14 text-center">
-        <p className="text-base font-medium text-red-600">{error || 'Order not found'}</p>
-        <Link to="/account?tab=orders" className="mt-4 inline-block text-sm text-navy underline">
-          Back to orders
-        </Link>
+      <div className="mx-auto max-w-3xl px-4 py-14">
+        <ErrorState
+          message={error || 'Order not found'}
+          retryAction="Retry"
+          onRetry={loadOrder}
+          actionTo="/account?tab=orders"
+        />
       </div>
     );
   }
@@ -172,7 +175,7 @@ export function OrderDetailPage() {
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="Please provide brief details..."
-                    className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
+                    className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                   />
                   <div className="flex gap-2">
                     <button

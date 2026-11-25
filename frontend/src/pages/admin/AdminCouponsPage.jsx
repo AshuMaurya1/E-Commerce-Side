@@ -3,11 +3,14 @@ import { Plus, Trash2, X } from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage, formatCurrency, formatDate } from '../../utils/format';
+import { ErrorState } from '../../components/ErrorState';
+import { TableSkeleton } from '../../components/Skeletons';
 
 export function AdminCouponsPage() {
   const toast = useToast();
   const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState({
     code: '',
@@ -23,10 +26,13 @@ export function AdminCouponsPage() {
 
   const load = async () => {
     setLoading(true);
+    setError('');
     try {
       setCoupons(await adminService.getCoupons());
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load coupons.');
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -95,10 +101,15 @@ export function AdminCouponsPage() {
         </button>
       </div>
 
+      {loading ? (
+        <TableSkeleton rows={5} cols={7} />
+      ) : error ? (
+        <ErrorState message={error} retryAction="Retry" onRetry={load} />
+      ) : (
       <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-surface text-xs uppercase text-zinc-500">
+            <thead className="bg-surface text-[11px] uppercase tracking-wider text-zinc-500">
               <tr>
                 <th className="px-4 py-3">Code</th>
                 <th className="px-4 py-3">Discount</th>
@@ -110,30 +121,34 @@ export function AdminCouponsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {loading ? (
-                <tr><td colSpan={7} className="px-4 py-6 text-center text-zinc-500">Loading...</td></tr>
+              {coupons.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-zinc-500">
+                    No coupons created yet.
+                  </td>
+                </tr>
               ) : (
                 coupons.map((c) => (
-                  <tr key={c.id}>
+                  <tr key={c.id} className="hover:bg-warmwhite">
                     <td className="px-4 py-3">
                       <p className="font-mono font-semibold text-navy">{c.code}</p>
                       {c.description && <p className="text-xs text-zinc-500">{c.description}</p>}
                     </td>
-                    <td className="px-4 py-3 text-zinc-800">
+                    <td className="tabular-nums px-4 py-3 text-zinc-800">
                       {c.discountType === 'PERCENTAGE'
                         ? `${c.discountValue}%${c.maxDiscount ? ` (max ${formatCurrency(c.maxDiscount)})` : ''}`
                         : formatCurrency(c.discountValue)}
                     </td>
-                    <td className="px-4 py-3 text-zinc-600">{formatCurrency(c.minOrderValue)}</td>
-                    <td className="px-4 py-3 text-zinc-600">
+                    <td className="tabular-nums px-4 py-3 text-zinc-600">{formatCurrency(c.minOrderValue)}</td>
+                    <td className="tabular-nums px-4 py-3 text-zinc-600">
                       {c.usedCount} / {c.usageLimit ?? '∞'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-zinc-500">{formatDate(c.expiresAt)}</td>
+                    <td className="tabular-nums px-4 py-3 text-xs text-zinc-500">{formatDate(c.expiresAt)}</td>
                     <td className="px-4 py-3">
                       <button
                         type="button"
                         onClick={() => handleToggle(c)}
-                        className={`rounded border px-2 py-0.5 text-xs font-medium ${
+                        className={`rounded-sm border px-2 py-0.5 text-xs font-medium ${
                           c.active
                             ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
                             : 'border-zinc-200 bg-zinc-100 text-zinc-600'
@@ -146,7 +161,7 @@ export function AdminCouponsPage() {
                       <button
                         type="button"
                         onClick={() => handleDelete(c)}
-                        className="rounded border border-red-200 p-1 text-red-600 hover:bg-red-50"
+                        className="rounded-sm border border-red-200 p-1 text-red-600 hover:bg-red-50"
                         aria-label={`Delete ${c.code}`}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -159,6 +174,7 @@ export function AdminCouponsPage() {
           </table>
         </div>
       </div>
+      )}
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -169,81 +185,105 @@ export function AdminCouponsPage() {
                 <X className="h-4 w-4 text-zinc-500" />
               </button>
             </div>
-            <form onSubmit={handleCreate} className="space-y-3">
-              <input
-                required
-                placeholder="Code (e.g. FESTIVE15)"
-                value={form.code}
-                onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm uppercase"
-              />
-              <input
-                placeholder="Description"
-                value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <select
-                  value={form.discountType}
-                  onChange={(e) => setForm({ ...form, discountType: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-                >
-                  <option value="PERCENTAGE">Percentage (%)</option>
-                  <option value="FIXED">Fixed (₹)</option>
-                </select>
+            <form onSubmit={handleCreate} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Coupon Code *</label>
                 <input
-                  type="number"
-                  step="0.01"
                   required
-                  placeholder="Value"
-                  value={form.discountValue}
-                  onChange={(e) => setForm({ ...form, discountValue: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-                />
-                <input
-                  type="number"
-                  step="0.01"
-                  placeholder="Min order ₹"
-                  value={form.minOrderValue}
-                  onChange={(e) => setForm({ ...form, minOrderValue: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-                />
-                <input
-                  type="number"
-                  step="0.01"
-                  placeholder="Max discount ₹"
-                  value={form.maxDiscount}
-                  onChange={(e) => setForm({ ...form, maxDiscount: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-                />
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="Usage limit"
-                  value={form.usageLimit}
-                  onChange={(e) => setForm({ ...form, usageLimit: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
-                />
-                <input
-                  type="date"
-                  required
-                  value={form.expiresAt}
-                  onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
-                  className="rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+                  placeholder="FESTIVE15"
+                  value={form.code}
+                  onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm uppercase font-mono focus:border-navy focus:outline-none"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-3">
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">Description</label>
+                <input
+                  placeholder="Seasonal promotion"
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Discount Type</label>
+                  <select
+                    value={form.discountType}
+                    onChange={(e) => setForm({ ...form, discountType: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  >
+                    <option value="PERCENTAGE">Percentage (%)</option>
+                    <option value="FIXED">Fixed (₹)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Value *</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    placeholder="10"
+                    value={form.discountValue}
+                    onChange={(e) => setForm({ ...form, discountValue: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Min Order (₹)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="500"
+                    value={form.minOrderValue}
+                    onChange={(e) => setForm({ ...form, minOrderValue: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Max Discount (₹)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="500"
+                    value={form.maxDiscount}
+                    onChange={(e) => setForm({ ...form, maxDiscount: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Usage Limit</label>
+                  <input
+                    type="number"
+                    min="1"
+                    placeholder="Unlimited"
+                    value={form.usageLimit}
+                    onChange={(e) => setForm({ ...form, usageLimit: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-zinc-700 mb-1">Expires On *</label>
+                  <input
+                    type="date"
+                    required
+                    value={form.expiresAt}
+                    onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
+                    className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 border-t border-zinc-100 pt-3">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm"
+                  className="rounded-sm border border-zinc-300 px-3.5 py-1.5 text-sm text-zinc-700 hover:bg-surface"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white"
+                  className="rounded-sm bg-navy px-4 py-1.5 text-sm font-medium text-white hover:bg-navy-800"
                 >
                   Create
                 </button>

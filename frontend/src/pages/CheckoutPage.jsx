@@ -335,67 +335,91 @@ export function CheckoutPage() {
               )}
 
               {showNewAddress && (
-                <form onSubmit={handleSaveAddress} className="rounded-sm border border-zinc-200 bg-warmwhite p-5 space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <input
-                      required
-                      placeholder="Recipient full name"
-                      value={addrForm.recipientName}
-                      onChange={(e) => setAddrForm({ ...addrForm, recipientName: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      required
-                      placeholder="Phone number"
-                      value={addrForm.phone}
-                      onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      required
-                      placeholder="Address line 1"
-                      value={addrForm.line1}
-                      onChange={(e) => setAddrForm({ ...addrForm, line1: e.target.value })}
-                      className="sm:col-span-2 rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      placeholder="Apartment, suite, landmark (optional)"
-                      value={addrForm.line2}
-                      onChange={(e) => setAddrForm({ ...addrForm, line2: e.target.value })}
-                      className="sm:col-span-2 rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      required
-                      placeholder="City"
-                      value={addrForm.city}
-                      onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      required
-                      placeholder="State"
-                      value={addrForm.state}
-                      onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      required
-                      placeholder="Postal code"
-                      value={addrForm.postalCode}
-                      onChange={(e) => setAddrForm({ ...addrForm, postalCode: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
-                    <input
-                      placeholder="Label (Home, Work)"
-                      value={addrForm.label}
-                      onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
-                      className="rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm"
-                    />
+                <form onSubmit={handleSaveAddress} className="rounded-sm border border-zinc-200 bg-warmwhite p-5 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Recipient Full Name</label>
+                      <input
+                        required
+                        placeholder="Aarav Mehta"
+                        value={addrForm.recipientName}
+                        onChange={(e) => setAddrForm({ ...addrForm, recipientName: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Phone Number</label>
+                      <input
+                        required
+                        placeholder="9876543210"
+                        value={addrForm.phone}
+                        onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Address Line 1</label>
+                      <input
+                        required
+                        placeholder="House / Street / Locality"
+                        value={addrForm.line1}
+                        onChange={(e) => setAddrForm({ ...addrForm, line1: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Address Line 2 (optional)</label>
+                      <input
+                        placeholder="Apartment, suite, landmark"
+                        value={addrForm.line2}
+                        onChange={(e) => setAddrForm({ ...addrForm, line2: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">City</label>
+                      <input
+                        required
+                        placeholder="Bengaluru"
+                        value={addrForm.city}
+                        onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">State</label>
+                      <input
+                        required
+                        placeholder="Karnataka"
+                        value={addrForm.state}
+                        onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Postal Code</label>
+                      <input
+                        required
+                        placeholder="560001"
+                        value={addrForm.postalCode}
+                        onChange={(e) => setAddrForm({ ...addrForm, postalCode: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-700 mb-1">Address Label</label>
+                      <input
+                        placeholder="Home, Work"
+                        value={addrForm.label}
+                        onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
+                        className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
+                      />
+                    </div>
                   </div>
                   <button
                     type="submit"
                     disabled={savingAddr}
-                    className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50"
+                    className="rounded-sm bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-800 disabled:opacity-50 transition-colors"
                   >
                     {savingAddr ? 'Saving...' : 'Save Delivery Address'}
                   </button>
@@ -456,7 +480,7 @@ export function CheckoutPage() {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                     placeholder="WELCOME10"
-                    className="w-full sm:w-64 rounded-sm border border-zinc-300 px-3 py-1.5 text-sm uppercase"
+                    className="w-full sm:w-64 rounded-sm border border-zinc-300 bg-white px-3 py-1.5 text-sm uppercase focus:border-navy focus:outline-none"
                   />
                 </div>
               )}
@@ -471,7 +495,7 @@ export function CheckoutPage() {
                   value={customerNote}
                   onChange={(e) => setCustomerNote(e.target.value)}
                   placeholder="Delivery instructions for the courier..."
-                  className="w-full rounded-sm border border-zinc-300 px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-navy focus:outline-none"
                 />
               </div>
             </section>

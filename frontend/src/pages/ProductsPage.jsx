@@ -5,6 +5,7 @@ import { catalogService } from '../services/catalogService';
 import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/Skeletons';
 import { EmptyState } from '../components/EmptyState';
+import { ErrorState } from '../components/ErrorState';
 import { Pagination } from '../components/Pagination';
 import { useDebounce } from '../hooks/useDebounce';
 
@@ -16,6 +17,8 @@ export function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const [reloadTick, setReloadTick] = useState(0);
 
   const category = searchParams.get('category') || '';
   const urlSearch = searchParams.get('search') || '';
@@ -74,7 +77,7 @@ export function ProductsPage() {
     return () => {
       active = false;
     };
-  }, [category, urlSearch, minPrice, maxPrice, featured, trending, inStock, sort, page]);
+  }, [category, urlSearch, minPrice, maxPrice, featured, trending, inStock, sort, page, reloadTick]);
 
   function updateParam(key, value) {
     const next = new URLSearchParams(searchParams);
@@ -287,9 +290,11 @@ export function ProductsPage() {
 
           <div className="lg:col-span-9">
             {error ? (
-              <div className="rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                {error}
-              </div>
+              <ErrorState
+                message={error}
+                retryAction="Retry"
+                onRetry={() => setReloadTick((n) => n + 1)}
+              />
             ) : loading ? (
               <ProductGridSkeleton count={6} />
             ) : data.items.length === 0 ? (

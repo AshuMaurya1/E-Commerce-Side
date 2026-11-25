@@ -6,6 +6,7 @@ import { extractErrorMessage, formatCurrency, formatDateTime } from '../../utils
 import { OrderStatusBadge, PaymentStatusBadge } from '../../components/OrderStatusBadge';
 import { Pagination } from '../../components/Pagination';
 import { TableSkeleton } from '../../components/Skeletons';
+import { ErrorState } from '../../components/ErrorState';
 
 const NEXT_TRANSITIONS = {
   PENDING_PAYMENT: ['PLACED', 'CANCELLED'],
@@ -26,6 +27,7 @@ export function AdminOrdersPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [targetStatus, setTargetStatus] = useState('');
@@ -34,6 +36,7 @@ export function AdminOrdersPage() {
 
   const loadOrders = async (page = 0) => {
     setLoading(true);
+    setError('');
     try {
       const data = await adminService.getOrders({
         status: statusFilter || undefined,
@@ -43,7 +46,9 @@ export function AdminOrdersPage() {
       });
       setOrders(data);
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load orders.');
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -133,6 +138,8 @@ export function AdminOrdersPage() {
 
       {loading ? (
         <TableSkeleton rows={6} cols={6} />
+      ) : error ? (
+        <ErrorState message={error} retryAction="Retry" onRetry={() => loadOrders(orders.page)} />
       ) : (
         <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">

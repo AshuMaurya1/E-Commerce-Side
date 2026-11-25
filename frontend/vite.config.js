@@ -16,5 +16,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
+    execArgv: ['--require', './src/test/node-zlib-compat.cjs'],
   },
 });

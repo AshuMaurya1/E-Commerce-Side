@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage, formatCurrency } from '../../utils/format';
 import { Pagination } from '../../components/Pagination';
 import { TableSkeleton } from '../../components/Skeletons';
+import { ErrorState } from '../../components/ErrorState';
 
 const INITIAL_FORM = {
   categoryId: '',
@@ -28,6 +29,7 @@ export function AdminProductsPage() {
   const [products, setProducts] = useState({ items: [], page: 0, totalPages: 0 });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [lowStockOnly, setLowStockOnly] = useState(false);
@@ -40,6 +42,7 @@ export function AdminProductsPage() {
 
   const loadProducts = async (page = 0) => {
     setLoading(true);
+    setError('');
     try {
       const res = await adminService.getProducts({
         search: search || undefined,
@@ -50,7 +53,9 @@ export function AdminProductsPage() {
       });
       setProducts(res);
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const msg = extractErrorMessage(err, 'Could not load products.');
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -242,6 +247,8 @@ export function AdminProductsPage() {
 
       {loading ? (
         <TableSkeleton rows={6} cols={6} />
+      ) : error ? (
+        <ErrorState message={error} retryAction="Retry" onRetry={() => loadProducts(products.page)} />
       ) : (
         <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">

@@ -4,6 +4,7 @@ import { ArrowRight, RefreshCw, ShieldCheck, Truck } from 'lucide-react';
 import { catalogService } from '../services/catalogService';
 import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/Skeletons';
+import { ErrorState } from '../components/ErrorState';
 
 export function HomePage() {
   const [categories, setCategories] = useState([]);
@@ -12,6 +13,7 @@ export function HomePage() {
   const [bestSellers, setBestSellers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reloadTick, setReloadTick] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -40,7 +42,7 @@ export function HomePage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [reloadTick]);
 
   return (
     <div className="bg-white">
@@ -105,9 +107,11 @@ export function HomePage() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 py-14">
         {error && (
-          <div className="rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
+          <ErrorState
+            message={error}
+            retryAction="Retry"
+            onRetry={() => setReloadTick((n) => n + 1)}
+          />
         )}
 
         {/* Categories */}
