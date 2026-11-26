@@ -32,9 +32,10 @@ The repository includes `render.yaml`, which can be imported as a Render Bluepri
 
 1. Import the Git repository into Vercel.
 2. Keep the repository root as the project root.
-3. Set `VITE_API_BASE_URL=https://<your-render-service>.onrender.com/api/v1`.
-4. Optionally set `VITE_RAZORPAY_KEY_ID` to the public Razorpay key ID.
-5. Deploy the project.
+3. The root `vercel.json` proxies `/api/*` to `https://shopsphere-backend.onrender.com` by default, matching the Render service name in `render.yaml`.
+4. If your Render service uses a different hostname, set `VITE_API_BASE_URL=https://<your-render-service>.onrender.com/api/v1` in Vercel and redeploy the frontend.
+5. Optionally set `VITE_RAZORPAY_KEY_ID` to the public Razorpay key ID.
+6. Deploy the project.
 
 The repository includes `vercel.json` for root-based Vite builds.
 
