@@ -20,8 +20,8 @@ services:
       - key: APP_SEED_SAMPLE_DATA
         value: true
       - key: APP_SEED_ADMIN_EMAIL
-        value: admin@shopsphere.local
+        value: ashuakgec2316@gmail.com
       - key: APP_SEED_ADMIN_PASSWORD
-        value: Admin@12345
+        value: Ashu@23169043
       - key: JWT_SECRET
         generateValue: true
