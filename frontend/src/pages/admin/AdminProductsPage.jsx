@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Edit2, Plus, Upload, X } from 'lucide-react';
 import { adminService } from '../../services/adminService';
+import { catalogService } from '../../services/catalogService';
 import { useToast } from '../../context/ToastContext';
 import { extractErrorMessage, formatCurrency } from '../../utils/format';
 import { Pagination } from '../../components/Pagination';
@@ -62,7 +63,13 @@ export function AdminProductsPage() {
   };
 
   useEffect(() => {
-    adminService.getCategories().then(setCategories).catch(() => {});
+    catalogService.getCategories()
+      .then(setCategories)
+      .catch(() => {
+        adminService.getCategories()
+          .then(setCategories)
+          .catch(() => setCategories([]));
+      });
   }, []);
 
   useEffect(() => {

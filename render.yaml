@@ -20,8 +20,8 @@ services:
       - key: APP_SEED_SAMPLE_DATA
         value: true
       - key: APP_SEED_ADMIN_EMAIL
-        value: ashuakgec2316@gmail.com
+        sync: false
       - key: APP_SEED_ADMIN_PASSWORD
-        value: Ashu@23169043
+        sync: false
       - key: JWT_SECRET
         generateValue: true
