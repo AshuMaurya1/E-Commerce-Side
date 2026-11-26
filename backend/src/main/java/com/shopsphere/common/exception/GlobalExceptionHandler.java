@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -59,8 +60,8 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Invalid parameter value for " + ex.getName()));
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
+    @ExceptionHandler({DataIntegrityViolationException.class, DuplicateKeyException.class})
+    public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(Exception ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.error("Request conflicts with existing data"));
     }
