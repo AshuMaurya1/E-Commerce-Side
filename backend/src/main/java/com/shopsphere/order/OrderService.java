@@ -206,10 +206,6 @@ public class OrderService implements VerifiedPurchaseChecker {
         for (Product product : lockedProducts) {
             int qty = requestedQuantities.get(product.getId());
             inventoryService.reserveStock(product.getId(), qty, saved.getId(), userId);
-            if (isCod) {
-                product.setSoldCount(product.getSoldCount() + qty);
-                productRepository.save(product);
-            }
         }
 
         if (isCod && appliedCoupon != null) {

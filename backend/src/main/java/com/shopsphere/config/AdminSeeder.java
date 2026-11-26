@@ -1,8 +1,5 @@
 package com.shopsphere.config;
 
-import com.shopsphere.user.Role;
-import com.shopsphere.user.User;
-import com.shopsphere.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -11,6 +8,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.shopsphere.user.Role;
+import com.shopsphere.user.User;
+import com.shopsphere.user.UserRepository;
 
 @Component
 @Order(1)
@@ -36,18 +37,19 @@ public class AdminSeeder implements ApplicationRunner {
         if (email == null || email.isBlank() || password == null || password.isBlank()) {
             return;
         }
-        String normalized = email.trim().toLowerCase();
-        if (userRepository.existsByEmailIgnoreCase(normalized)) {
-            return;
-        }
 
-        User admin = new User();
-        admin.setFullName("ShopSphere Admin");
+        String normalized = email.trim().toLowerCase();
+        User admin = userRepository.findByEmailIgnoreCase(normalized).orElseGet(User::new);
+
+        if (admin.getId() == null) {
+            admin.setFullName("Ashu Singh Admin");
+        }
         admin.setEmail(normalized);
         admin.setPasswordHash(passwordEncoder.encode(password));
         admin.setRole(Role.ADMIN);
         admin.setActive(true);
         userRepository.save(admin);
-        log.info("Seeded controlled administrator account: {}", normalized);
+
+        log.info("Synchronized controlled administrator account: {}", normalized);
     }
 }

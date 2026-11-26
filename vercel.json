@@ -3,5 +3,11 @@
   "outputDirectory": "frontend/dist",
   "framework": "vite",
   "installCommand": "npm install --prefix frontend",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://shopsphere-backend.onrender.com/api/$1"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

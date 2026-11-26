@@ -3,11 +3,19 @@ backend/target/
 frontend/dist/
 frontend/node_modules/
 
+# Local databases
+backend/data/
+
 # Environment & secrets
 .env
 .env.local
 .env.*.local
 backend/.env
+backend/.env.local
+*.pem
+*.key
+*.p12
+*.jks
 
 # IDE & OS
 .idea/

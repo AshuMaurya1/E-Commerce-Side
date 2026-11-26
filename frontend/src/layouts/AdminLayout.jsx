@@ -50,7 +50,7 @@ export function AdminLayout() {
               S
             </span>
             <span className="text-sm font-semibold tracking-tight text-white">
-              ShopSphere Admin
+              ASHU'S ADMIN
             </span>
           </Link>
           <button
