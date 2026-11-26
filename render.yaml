@@ -8,7 +8,7 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
-        value: dev
+        value: prod
       - key: FRONTEND_URL
         value: https://shopsphere-three-plum.vercel.app
       - key: COOKIE_SECURE
@@ -18,10 +18,20 @@ services:
       - key: APP_PAYMENT_SIMULATION_ENABLED
         value: true
       - key: APP_SEED_SAMPLE_DATA
-        value: true
+        value: false
       - key: APP_SEED_ADMIN_EMAIL
         sync: false
       - key: APP_SEED_ADMIN_PASSWORD
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 4000
+      - key: DB_NAME
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
