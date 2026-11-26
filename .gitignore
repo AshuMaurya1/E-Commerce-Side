@@ -3,6 +3,9 @@ backend/target/
 frontend/dist/
 frontend/node_modules/
 
+# Local databases
+backend/data/
+
 # Environment & secrets
 .env
 .env.local
