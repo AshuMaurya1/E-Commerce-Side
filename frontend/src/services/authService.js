@@ -13,7 +13,7 @@ export const authService = {
 
   async refresh() {
     const res = await api.post('/auth/refresh');
-    return res.data.data;
+    return res.data?.data ?? null;
   },
 
   async logout() {

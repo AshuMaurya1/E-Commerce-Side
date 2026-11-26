@@ -64,12 +64,17 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<AuthResponse>> refresh(
+    public ResponseEntity<?> refresh(
             @CookieValue(name = REFRESH_COOKIE_NAME, required = false) String refreshToken,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         validateOriginIfPresent(request);
+        // An anonymous visitor has no session to restore. Treat that as a normal
+        // signed-out state instead of returning an expected-but-noisy 401.
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return ResponseEntity.noContent().build();
+        }
         AuthTokensResult result = authService.refresh(refreshToken);
         addRefreshCookie(response, result.rawRefreshToken(),
                 Duration.ofMillis(appProperties.getJwt().getRefreshExpirationMs()));
