@@ -14,7 +14,7 @@ app:
   cookie:
     secure: ${COOKIE_SECURE:false}
   seed:
-    admin-email: ${APP_SEED_ADMIN_EMAIL:ashuakgec2316@gmail.com}
-    admin-password: ${APP_SEED_ADMIN_PASSWORD:Ashu@2316}
+    admin-email: ${APP_SEED_ADMIN_EMAIL:}
+    admin-password: ${APP_SEED_ADMIN_PASSWORD:}
   payment:
     simulation-enabled: ${APP_PAYMENT_SIMULATION_ENABLED:true}
