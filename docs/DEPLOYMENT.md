@@ -21,8 +21,8 @@
 - `COOKIE_SECURE=true`
 - `COOKIE_SAME_SITE=None`
 - `JWT_SECRET=<random 32-plus-character secret>`
-- `APP_SEED_ADMIN_EMAIL=<production admin email>`
-- `APP_SEED_ADMIN_PASSWORD=<strong production admin password>`
+- `APP_SEED_ADMIN_EMAIL=ashuakgec2316@gmail.com`
+- `APP_SEED_ADMIN_PASSWORD=ashu@2316`
 - `APP_PAYMENT_SIMULATION_ENABLED=false`
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` for persistent image uploads
 
