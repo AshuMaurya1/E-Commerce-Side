@@ -67,6 +67,8 @@ export function Footer() {
             </p>
             <form onSubmit={handleSubscribe} className="mt-3.5 flex gap-2">
               <input
+                id="newsletter-email"
+                name="email"
                 type="email"
                 required
                 value={email}
